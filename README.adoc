@@ -1,0 +1,13 @@
+= ABQRVerifier
+
+A verifier app for COVID19 proof-of-vaccine QR codes.
+
+== Privacy
+While this app is designed as a webpage, it runs offline. Meaning, once you open the page you could turn on airplane mode and it would still work. It does not send any of the QR code data. It processes the data on your phone or computer.
+
+== Disclaimer
+This is a hobby project. No guarentees or promises are made. Use at your own risk.
+This program comes with ABSOLUTELY NO WARRANTY.
+
+== License
+Licensed under the GNU GPL version 3. See the LICENSE file for details.

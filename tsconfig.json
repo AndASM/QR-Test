@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "removeComments": true,
+        "esModuleInterop": true,
+        "target": "es5",
+        "isolatedModules": true,
+        "baseUrl": ".",
+        "paths": {
+            "~*": ["./*"]
+        }
+    }
+}
