@@ -1,5 +1,5 @@
 // @ts-ignore
-import {importJWK} from 'jose/dist/browser/key/import'
+import {importJWK} from 'jose/key/import'
 import type {KeyLike} from 'jose/types'
 
 // Alberta value derived from known signature

@@ -1,74 +1,14 @@
-// @ts-ignore
-import {compactVerify} from 'jose/dist/browser/jws/compact/verify'
+import {compactVerify} from 'jose/jws/compact/verify'
 import pako from 'pako'
 import {Base64} from 'js-base64'
 import {getKnownIssuers} from "./knownissuers"
-import {JWTPayload} from 'jose/types'
-
-interface PatientName {
-    family: string
-    given: string[]
-}
-interface PatientResource {
-    resourceType: 'Patient'
-    name: PatientName[]
-    birthDate: string
-}
-
-interface ImmunizationResource {
-    resourceType: 'Immunization'
-    meta: object
-    status: string
-    vaccineCode: {
-        coding: {
-            system: string
-            code: string
-        }[]
-    }
-    patient: {
-        reference: string
-    }
-    occurrenceDateTime: string
-    performer: object[]
-    lotNumber: string
-}
-
-type FhirResource = PatientResource | ImmunizationResource
-
-interface FhirEntry {
-    fullUrl: string
-    resource: FhirResource
-}
-
-interface FhirBundle {
-    resourceType: string
-    type: string
-    entry: FhirEntry[]
-}
-
-interface VerifiedCredential {
-    type: string[]
-    credentialSubject: {
-        fhirVersion: string
-        fhirBundle: FhirBundle
-    }
-}
-
-interface Payload extends JWTPayload {
-    iss: string
-    nbf: number
-    vc: VerifiedCredential
-}
+import {ImmunizationResource, PatientResource, Payload} from "./data_model";
+import Patient from './patient'
 
 export class SmartHealthCard {
     jws: string
     header: object
-    payload: Payload
     verified: boolean
-
-    get patientName(): string {
-        return (<PatientResource>this.payload.vc.credentialSubject.fhirBundle.entry[0].resource).name[0].family
-    }
 
     constructor(uri: string) {
         const {jws, header, payload} = SmartHealthCard.parseShcUri(uri)
@@ -78,7 +18,39 @@ export class SmartHealthCard {
         this.verified = false
     }
 
-    public static async build(uri: string): Promise<SmartHealthCard> {
+    protected _payload: Payload
+
+    get payload() {
+        return this._payload
+    }
+
+    protected set payload(value) {
+        this._payload = value
+        this._patient = null
+    }
+
+    protected _patient: Patient
+
+    get patient(): Patient {
+        if (!this._patient)
+            this._patient = new Patient(<PatientResource>this.entries
+                .find((value) => value.resource.resourceType === 'Patient')
+                .resource
+            )
+        return this._patient
+    }
+
+    get immunizations() {
+        return this.entries
+            .filter((value) => value.resource.resourceType === 'Immunization')
+            .map(value => <ImmunizationResource>value.resource)
+    }
+
+    protected get entries() {
+        return this.payload.vc.credentialSubject.fhirBundle.entry
+    }
+
+    static async build(uri: string): Promise<SmartHealthCard> {
         const obj = new SmartHealthCard(uri)
         await obj.doVerify()
         return obj

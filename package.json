@@ -11,25 +11,44 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "parcel build",
-    "start": "parcel",
+    "build": "webpack build",
+    "start": "webpack serve",
     "pages": "push-dir --dir=dist --branch=gh-pages --cleanup --verbose"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@kkirbatski/parcel-resolver-require-resolve": "^1.0.1",
-    "@parcel/transformer-sass": "^2.0.0-rc.0",
-    "@types/pako": "^1.0.2",
-    "parcel": "^2.0.0-rc.0",
-    "push-dir": "^0.4.1",
-    "typescript": "^4.4.3"
+    "@kkirbatski/parcel-resolver-require-resolve": "*",
+    "@types/glob": "^7.1.4",
+    "@types/mini-css-extract-plugin": "*",
+    "@types/node": "*",
+    "@types/pako": "*",
+    "@types/webpack": "*",
+    "@types/webpack-dev-server": "*",
+    "css-loader": "*",
+    "html-webpack-plugin": "*",
+    "mini-css-extract-plugin": "*",
+    "purgecss-webpack-plugin": "^4.0.3",
+    "push-dir": "*",
+    "sass": "*",
+    "sass-loader": "*",
+    "simple-pug-loader": "*",
+    "ste-events": "*",
+    "ts-loader": "*",
+    "ts-node": "*",
+    "typescript": "*",
+    "webpack": "*",
+    "webpack-cli": "*",
+    "webpack-dev-server": "*",
+    "workbox-webpack-plugin": "*"
   },
   "dependencies": {
-    "jose": "^3.19.0",
-    "js-base64": "^3.7.2",
-    "jsqr": "^1.4.0",
-    "pako": "^2.0.4"
+    "bootstrap": "*",
+    "glob": "^7.2.0",
+    "jose": "*",
+    "js-base64": "*",
+    "jsqr": "*",
+    "pako": "*"
   }
 }
