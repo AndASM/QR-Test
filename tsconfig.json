@@ -10,5 +10,7 @@
     "allowJs": true,
     "moduleResolution": "node",
     "baseUrl": "."
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["src/workers/**/*"]
 }

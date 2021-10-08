@@ -1,10 +1,10 @@
+import glob from 'glob'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import path from 'path'
-import glob from 'glob'
+import PurgeCSSPlugin from 'purgecss-webpack-plugin'
 import * as webpack from 'webpack'
 import webpackDevServer from 'webpack-dev-server'
-import PurgeCSSPlugin from 'purgecss-webpack-plugin'
 
 function ignore() {
   new PurgeCSSPlugin({
@@ -20,36 +20,49 @@ function pathMaker(segment: string) {
   const _base = path.resolve(__dirname, segment)
   return (...segments: string[]) => path.join(_base, ...segments)
 }
+
 const PATHS = {
   src: pathMaker('src'),
+  webworkers: pathMaker('src/workers'),
   dist: pathMaker('dist')
 }
 
 const config: Configuration = {
-  mode: 'development',
+  mode: 'production',
   entry: {
-    index: './src/index.ts',
-    ServiceWorker: './src/ServiceWorker.ts'
+    index: PATHS.src('index.ts'),
+    'service-worker': PATHS.webworkers('service-worker.ts')
   },
-  devtool: 'eval-source-map',
   module: {
     rules: [
       {
         test: /\.tsx?$/i,
-        use: 'ts-loader',
+        loader: 'ts-loader',
+        options: {
+          instance: 'main'
+        },
         exclude: {
           or: [
+            PATHS.webworkers(),
             /node_modules/,
             /webpack\.config\.ts/
           ]
         }
+      },
+      {
+        test: /\.tsx?$/i,
+        loader: 'ts-loader',
+        options: {
+          instance: 'webworkers'
+        },
+        include: PATHS.webworkers()
       },
       {test: /\.pug$/i, loader: 'simple-pug-loader'},
       {test: /\.s[ac]ss$/i, use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']}
     ]
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.js']
   },
   output: {
     filename: '[name].js',
@@ -62,7 +75,7 @@ const config: Configuration = {
       minify: false,
       chunks: ['index']
     }),
-    new MiniCssExtractPlugin({filename: 'styles.css'})
+    new MiniCssExtractPlugin({filename: '[name].css'})
   ],
   devServer: {
     https: true,
@@ -81,7 +94,7 @@ const config: Configuration = {
         }
       }
     }
-  },
+  }
 }
 
 export default config

@@ -1,0 +1,10 @@
+{
+  //"extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "ES5",
+    "lib": ["WebWorker", "ES5"],
+    "explainFiles": true
+  },
+  "include": ["**/*"],
+  "exclude": []
+}
