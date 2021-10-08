@@ -49,12 +49,25 @@ export default class App {
   }
   
   addEntry(shc: SmartHealthCard) {
-    const output= this.el.output
-    const div = document.createElement('div')
-    div.innerText = `${shc.verified ? 'Verified' : 'Unverified'} for ${shc.patient.fullName}`
-    output.appendChild(div)
-    if(output.childElementCount >= 5) {
-      output.firstElementChild.remove()
+    const output = this.el.output
+    const container = document.createElement('div')
+    container.className =
+        `person ${shc.verified ? 'verified' : 'invalid'} ${
+            shc.immunizationPercentage === 100 ? 'complete' : 'incomplete'
+        }`
+    
+    const markup = `
+        <div class="patientName">${shc.patient.fullName}</div>
+        <div class="immunizationLevel">${shc.immunizationPercentage.toString(10)}</div>
+    `
+    
+    container.innerHTML = markup
+    
+    output.appendChild(container)
+    output.insertBefore(container, output.firstChild)
+    
+    if (output.childElementCount >= 10) {
+      output.lastElementChild.remove()
     }
   }
   

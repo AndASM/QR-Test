@@ -1,28 +1,23 @@
-import {ImmunizationResource} from "./data_model";
+import {ImmunizationResource} from './data_model'
+import {Vaccine} from './vaccine'
 
-
-const codingSystems: {[system: string]: {[code: number]: string}} = {
-    'http://hl7.org/fhir/sid/cvx': {
-        207: "Moderna",
-        208: "Pfizer",
-        210: "AstraZeneca",
-        212: "Janssen"
-    }
-}
-
-
-class Immunization {
-    data: ImmunizationResource
-
-    constructor(data: ImmunizationResource) {
-        this.data = data
-    }
-
-    get name() {
-        for (const value of this.data.vaccineCode.coding) {
-            const name = codingSystems?.[value.system]?.[parseInt(value.code, 10)]
-            if (name) return name
-        }
-        return null
-    }
+export default class Immunization {
+  data: ImmunizationResource
+  vaccine: Vaccine
+  
+  public constructor(data: ImmunizationResource) {
+    this.data = data
+    this.data.vaccineCode.coding.find(value => {
+      this.vaccine = Vaccine.get(value)
+      return this.vaccine !== undefined
+    })
+  }
+  
+  get name() {
+    return this.vaccine?.name
+  }
+  
+  get amountImmunized() {
+    return 1.0 / this.vaccine?.dosesRequired
+  }
 }

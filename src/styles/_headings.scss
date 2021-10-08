@@ -1,0 +1,8 @@
+@use 'Variables' as var;
+@use 'sass:math' as math;
+
+@for $i from 1 through 6 {
+  h#{$i}, .h#{$i} {
+    font-size: var.$font-size-base * math.pow(var.$heading-factor, 6 - $i);
+  }
+}

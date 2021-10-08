@@ -44,7 +44,6 @@
     "workbox-webpack-plugin": "*"
   },
   "dependencies": {
-    "bootstrap": "*",
     "glob": "^7.2.0",
     "jose": "*",
     "js-base64": "*",

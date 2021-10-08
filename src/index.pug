@@ -5,18 +5,14 @@ html(lang='en')
         meta(name='viewport' content='width=device-width, initial-scale=1')
         title ABQRVerifier - Unofficial COVID19 QR Code Verifier
     body
-        nav#navbar
-            header#navTitle
+        nav.navbar
+            header.navTitle
                 .title ABQRVerifier
                 .subtitle Unofficial COVID19 QR Code Verifier
-        .content
-            .row
-                .col
-                    #videoContainer
-                        #startupMessage.message &#x1F3A5; Unable to access video stream (please make sure you have a webcam enabled)
-                        #loadingMessage(hidden).message &#x231B; Loading video...
-                        canvas#canvas(hidden)
-            .row
-                .col
-                    #outputContainer
-                        #output.message
+        main.content
+            .videoContainer
+                #startupMessage.message &#x1F3A5; Unable to access video stream (please make sure you have a webcam enabled)
+                #loadingMessage(hidden).message &#x231B; Loading video...
+                canvas#canvas(hidden)
+            .outputContainer
+                #output.message

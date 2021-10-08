@@ -11,15 +11,17 @@ export interface PatientResource {
     birthDate: string
 }
 
+export interface VaccineCoding {
+    system: string
+    code: string
+}
+
 export interface ImmunizationResource {
     resourceType: 'Immunization'
     meta: object
     status: string
     vaccineCode: {
-        coding: {
-            system: string
-            code: string
-        }[]
+        coding: VaccineCoding[]
     }
     patient: {
         reference: string

@@ -27,7 +27,10 @@ const PATHS = {
 
 const config: Configuration = {
   mode: 'development',
-  entry: './src/index.ts',
+  entry: {
+    index: './src/index.ts',
+    ServiceWorker: './src/ServiceWorker.ts'
+  },
   devtool: 'eval-source-map',
   module: {
     rules: [
@@ -49,14 +52,15 @@ const config: Configuration = {
     extensions: ['.tsx', '.ts', '.js'],
   },
   output: {
-    filename: 'main.js',
+    filename: '[name].js',
     path: PATHS.dist()
   },
   plugins: [
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: PATHS.src('index.pug'),
-      minify: false
+      minify: false,
+      chunks: ['index']
     }),
     new MiniCssExtractPlugin({filename: 'styles.css'})
   ],

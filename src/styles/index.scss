@@ -1,4 +1,149 @@
-@import "Variables";
-@import "~bootstrap/scss/bootstrap";
-@import "App";
+@use 'Variables' as var;
+@use 'headings';
+@use 'colors';
 
+[hidden] {
+  display: none !important;
+}
+
+*, ::before, ::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-size: var.$font-size-base;
+  font-family: var(--body-font-family);
+}
+
+.gutters-top-bottom {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.flex-center {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.flex-all-grow {
+  * {
+    flex-grow: 1;
+  }
+}
+
+.navbar {
+  @extend .gutters-top-bottom;
+  @extend .flex-center;
+  width: 100%;
+  top: 0;
+  background-color: var(--color-dark);
+  color: var(--color-light);
+
+  .navTitle {
+
+    .title {
+      @extend h1;
+    }
+
+    .subtitle {
+      color: var(--color-dim);
+      font-size: smaller;
+    }
+  }
+}
+
+
+.content {
+  position: relative;
+  @extend .flex-center;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.videoContainer {
+  position: relative;
+  min-height: 10vh;
+  flex-grow: 1;
+  background-color: var(--color-black);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  canvas {
+    max-height: 50vh;
+    position: relative;
+    margin: 0;
+    max-width: 100%;
+  }
+}
+
+.outputContainer {
+  min-height: 10vh;
+  min-width: 40%;
+  background-color: var(--color-dim);
+  color: var(--color-light);
+  flex-grow: 2147483646;
+  align-self: stretch;
+
+  #output {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+
+    > * {
+      filter: brightness(80%);
+    }
+    > :first-child {
+      filter: none;
+    }
+  }
+}
+
+
+.message {
+  display: inline-block;
+}
+
+.verified.complete:before {
+  content: "\2705";
+}
+
+.verified.incomplete:before {
+  content: "\26A0";
+}
+
+.invalid:before {
+  content: "\26D4";
+}
+
+.person {
+  display: grid;
+  grid-template-rows: fit-content(1px) fit-content(2rem);
+  grid-template-columns: auto auto;
+
+  &:before {
+    grid-area: 1 / 1 / span 2;
+    font-size: 200%;
+  }
+  .patientName {
+    grid-area: 1 / 2;
+  }
+  .immunizationLevel {
+    grid-area: 2 / 2;
+    font-size: small;
+
+    &:before {
+      content: 'Completed: ';
+    }
+
+    &:after {
+      content: '%';
+    }
+  }
+}
