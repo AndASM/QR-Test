@@ -4,6 +4,11 @@
   "description": "",
   "private": true,
   "source": "src/index.html",
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  },
   "browserslist": [
     "> 0.5%",
     "last 2 versions",
@@ -11,26 +16,32 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack build",
-    "start": "webpack serve",
-    "pages": "push-dir --dir=dist --branch=gh-pages --cleanup --verbose"
+    "build:5-do": "webpack build",
+    "start:2-dep": "run-s build",
+    "start:5-do": "webpack serve",
+    "pages:2-dep": "run-s build",
+    "pages:5-do": "gh-pages -d dist -f",
+    "build": "run-s build:**",
+    "start": "run-s start:**",
+    "pages": "run-s pages:**"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@kkirbatski/parcel-resolver-require-resolve": "*",
-    "@types/glob": "^7.1.4",
+    "@types/glob": "*",
     "@types/mini-css-extract-plugin": "*",
     "@types/node": "*",
     "@types/pako": "*",
     "@types/webpack": "*",
     "@types/webpack-dev-server": "*",
-    "@types/workbox-webpack-plugin": "^5.1.8",
     "css-loader": "*",
+    "gh-pages": "^3.2.3",
+    "glob": "*",
     "html-webpack-plugin": "*",
     "mini-css-extract-plugin": "*",
-    "purgecss-webpack-plugin": "^4.0.3",
+    "npm-run-all2": "*",
+    "purgecss-webpack-plugin": "*",
     "push-dir": "*",
     "sass": "*",
     "sass-loader": "*",
@@ -42,10 +53,11 @@
     "webpack": "*",
     "webpack-cli": "*",
     "webpack-dev-server": "*",
-    "workbox-webpack-plugin": "*"
+    "babel-loader": "*",
+    "@babel/core": "*",
+    "@babel/preset-env": "*"
   },
   "dependencies": {
-    "glob": "^7.2.0",
     "jose": "*",
     "js-base64": "*",
     "jsqr": "*",

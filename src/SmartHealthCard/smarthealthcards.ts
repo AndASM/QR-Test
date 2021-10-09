@@ -1,9 +1,9 @@
 import {compactVerify} from 'jose/jws/compact/verify'
-import pako from 'pako'
 import {Base64} from 'js-base64'
+import pako from 'pako'
+import {ImmunizationResource, PatientResource, Payload} from './data_model'
 import Immunization from './immunization'
 import {getKnownIssuers} from './knownissuers'
-import {ImmunizationResource, PatientResource, Payload} from './data_model'
 import Patient from './patient'
 
 export class SmartHealthCard {
@@ -61,6 +61,15 @@ export class SmartHealthCard {
     return this.payload.vc.credentialSubject.fhirBundle.entry
   }
   
+  async doVerify() {
+    try {
+      const verifyResult = await compactVerify(this.jws, await getKnownIssuers((this.payload as any).iss as string))
+      this.verified = verifyResult != null
+    } catch {
+      this.verified = false
+    }
+  }
+  
   static async build(uri: string): Promise<SmartHealthCard> {
     const obj = new SmartHealthCard(uri)
     await obj.doVerify()
@@ -88,14 +97,5 @@ export class SmartHealthCard {
     const shcCodes = numericData.match(/(\d\d?)/g) // Get two digits
     const characterCodes = shcCodes.map((code) => parseInt(code, 10) + 45) // add 45
     return String.fromCharCode(...characterCodes)
-  }
-  
-  async doVerify() {
-    try {
-      const verifyResult = await compactVerify(this.jws, await getKnownIssuers((this.payload as any).iss as string))
-      this.verified = verifyResult != null
-    } catch {
-      this.verified = false
-    }
   }
 }

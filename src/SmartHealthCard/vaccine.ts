@@ -2,9 +2,8 @@ import getCodingSystem from './CodingSystems'
 import {VaccineCoding} from './data_model'
 
 export class Vaccine {
-  static _Vaccines: Map<string, Vaccine> = new Map<string, Vaccine>()
   public codings: VaccineCoding[]
-  
+
   public constructor(
       public name: string,
       public dosesRequired: number,
@@ -20,6 +19,8 @@ export class Vaccine {
       Vaccine._Vaccines.set(Vaccine.codingToKey(coding), this)
     }
   }
+  
+  static _Vaccines: Map<string, Vaccine> = new Map<string, Vaccine>()
   
   static codingToKey(coding: VaccineCoding): string {
     return `${coding.system}-${coding.code}`
